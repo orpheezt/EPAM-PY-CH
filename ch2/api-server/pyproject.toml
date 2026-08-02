@@ -8,8 +8,8 @@ dependencies = [
     "pydantic-settings>=2.14.2",
 ]
 
-[project.scripts]
-api-server = "api_server:main"
+[tool.fastapi]
+entrypoint = "api_server.app:app"
 
 [build-system]
 requires = ["uv_build>=0.12.1,<0.13.0"]
