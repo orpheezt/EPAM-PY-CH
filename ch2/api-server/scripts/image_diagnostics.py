@@ -62,11 +62,11 @@ def get_history_data(image_ref: str) -> list[dict] | None:
     b_data = json.loads(res.stdout)
     history = b_data.get("History", [])
     manifest_raw = b_data.get("Manifest", "{}")
-    manifest = (
-        json.loads(manifest_raw)
-        if isinstance(manifest_raw, str)
-        else manifest_raw
-    )
+    match manifest_raw:
+        case str():
+            manifest = json.loads(manifest_raw)
+        case _:
+            manifest = manifest_raw
     layers = manifest.get("layers", [])
 
     h_list = []
@@ -266,6 +266,3 @@ def main(
 
 if __name__ == "__main__":
     app()
-
-
-

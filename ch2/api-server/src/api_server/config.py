@@ -15,14 +15,7 @@ class Settings(BaseSettings):
         env_file=".env", env_file_encoding="utf-8", extra="ignore"
     )
 
-    PROVIDER: Provider = Provider.LITSERVE
-
-    LITSERVE_URL: str = "http://localhost:8001/predict"
-
-    MODAL_WEB_ENDPOINT_URL: str = ""
-
-    HF_API_URL: str = "https://api-inference.huggingface.co/models/pysentimiento/robertuito-sentiment-analysis"
-    HF_TOKEN: str | None = None
+    PROVIDER: Provider = Provider.HF_API
 
 
 @lru_cache

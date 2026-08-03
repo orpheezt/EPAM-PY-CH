@@ -25,7 +25,6 @@ class BatchFeedbackRequest(BaseModel):
 
 class FeedbackResponse(BaseModel):
     sentiment: SentimentDetail
-    summary: str
 
 
 class BatchFeedbackResponse(BaseModel):

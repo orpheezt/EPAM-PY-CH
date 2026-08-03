@@ -2,12 +2,22 @@ from typing import Annotated
 
 from fastapi import Depends
 
-from api_server.config import Provider, get_provider
-
+from .providers import (
+    SentimentProvider,
+    SummarizerProvider,
+    get_sentiment_provider,
+    get_summarizer_provider,
+)
 from .services import InferenceService
 
 
 def get_inference_service(
-    provider: Annotated[Provider, Depends(get_provider)],
+    sentiment_provider: Annotated[SentimentProvider, Depends(get_sentiment_provider)],
+    summarizer_provider: Annotated[
+        SummarizerProvider, Depends(get_summarizer_provider)
+    ],
 ) -> InferenceService:
-    return InferenceService(provider)
+    return InferenceService(
+        sentiment_provider=sentiment_provider,
+        summarizer_provider=summarizer_provider,
+    )
