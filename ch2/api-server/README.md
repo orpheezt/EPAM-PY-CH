@@ -32,6 +32,18 @@ Also as said in the statement I used the models
 - `finiteautomata/beto-sentiment-analysis`
 - `facebook/bart-large-cnn`
 
+And the dataset
+
+- `SetFit/amazon_reviews_multi_en`
+
+**WHICH IS USED IN E2E**
+
+Also put an `.env` with
+
+```bash
+HF_TOKEN=<your-token>
+```
+
 What I offer is an summary and quantification of user reviews with bad comments.
 
 So I orchestrate both the sentiment analysis API and summarization
