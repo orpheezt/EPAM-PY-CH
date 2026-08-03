@@ -17,6 +17,13 @@ class Settings(BaseSettings):
 
     PROVIDER: Provider = Provider.HF_API
 
+    CACHE_ENABLED: bool = True
+    CACHE_TTL_SECONDS: int = 3600
+    CACHE_MAX_SIZE: int = 1000
+
+    RATE_LIMIT_ENABLED: bool = True
+    RATE_LIMIT_PER_MINUTE: int = 60
+
 
 @lru_cache
 def get_settings() -> Settings:

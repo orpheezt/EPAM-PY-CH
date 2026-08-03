@@ -1,6 +1,6 @@
 import asyncio
 
-import httpx
+import httpx2
 
 from api_server.product_review.schemas import SentimentDetail, SentimentLabel
 
@@ -21,10 +21,11 @@ class HFSentimentProvider:
     def __init__(
         self,
         settings: HFSettings,
-        client: httpx.AsyncClient | None = None,
+        client: httpx2.AsyncClient | None = None,
     ) -> None:
         self.settings = settings
-        self.client = client or httpx.AsyncClient()
+        self.client = client or httpx2.AsyncClient()
+
 
     async def _analyze_single(
         self, review: str, headers: dict[str, str]
@@ -64,10 +65,11 @@ class HFSummarizerProvider:
     def __init__(
         self,
         settings: HFSettings,
-        client: httpx.AsyncClient | None = None,
+        client: httpx2.AsyncClient | None = None,
     ) -> None:
         self.settings = settings
-        self.client = client or httpx.AsyncClient()
+        self.client = client or httpx2.AsyncClient()
+
 
     async def generate_summary(self, reviews: list[str]) -> str:
         headers: dict[str, str] = {}

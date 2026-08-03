@@ -16,7 +16,7 @@ import time
 from dataclasses import dataclass
 from typing import Annotated
 
-import httpx2 as httpx
+import httpx2
 import typer
 from datasets import load_dataset
 from rich.console import Console
@@ -82,13 +82,14 @@ async def run_tests(base_url: str, samples_per_star: int) -> None:
                 )
             )
 
-    async with httpx.AsyncClient(base_url=base_url, timeout=30.0) as client:
+    async with httpx2.AsyncClient(base_url=base_url, timeout=30.0) as client:
         try:
             h_resp = await client.get("/health")
             console.print(
                 f"[bold green]✓ Server Healthcheck:[/] [white]{h_resp.json()}[/]\n"
             )
-        except httpx.HTTPError as e:
+        except httpx2.HTTPError as e:
+
             console.print(f"[bold red]✗ Could not reach server at {base_url}:[/] {e}")
             raise typer.Exit(code=1)
 
