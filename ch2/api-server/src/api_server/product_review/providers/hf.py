@@ -80,6 +80,9 @@ class HFSummarizerProvider:
         if len(text) < 60:
             return text
 
+        if len(text) > 3000:
+            text = text[:3000].rsplit(" ", 1)[0]
+
         resp = await self.client.post(
             self.settings.HF_SUMMARIZER_API_URL,
             headers=headers,
