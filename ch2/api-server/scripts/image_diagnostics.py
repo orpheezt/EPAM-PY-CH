@@ -11,11 +11,14 @@
 
 import json
 import subprocess
+from collections import Counter
 from pathlib import Path
-from typing import Annotated
+from shutil import which
+from typing import Annotated, TypedDict
 
 import typer
 from rich.console import Console
+from rich.filesize import decimal as fmt_decimal
 from rich.panel import Panel
 from rich.table import Table
 
@@ -24,6 +27,12 @@ app = typer.Typer(
     add_completion=False,
 )
 console = Console()
+
+
+class SignatureInfo(TypedDict):
+    status: str
+    signer: str
+    fingerprint: str
 
 
 BASE_IMAGE_KEYWORDS = (
@@ -38,6 +47,9 @@ BASE_IMAGE_KEYWORDS = (
 
 def get_history_data(image_ref: str) -> list[dict] | None:
     """Retrieve layer history and sizes using buildah inspect."""
+    if not which("buildah"):
+        return None
+
     res = subprocess.run(
         ["buildah", "inspect", "--type", "image", image_ref],
         capture_output=True,
@@ -80,9 +92,9 @@ def get_history_data(image_ref: str) -> list[dict] | None:
     return h_list
 
 
-def inspect_gpg_signature(sig_file: Path, archive_file: Path) -> dict[str, str]:
+def inspect_gpg_signature(sig_file: Path, archive_file: Path) -> SignatureInfo:
     """Inspect and verify GPG signature file using pattern matching."""
-    if not sig_file.exists():
+    if not sig_file.exists() or not which("gpg"):
         return {"status": "UNSIGNED", "signer": "N/A", "fingerprint": "N/A"}
 
     res = subprocess.run(
@@ -104,9 +116,9 @@ def inspect_gpg_signature(sig_file: Path, archive_file: Path) -> dict[str, str]:
     return {"status": status, "signer": signer, "fingerprint": fp}
 
 
-def categorize_layers(history_data: list[dict]) -> dict[str, int]:
-    """Categorize layer sizes by command pattern using pattern matching."""
-    totals = {"base": 0, "venv": 0, "app": 0, "setup": 0}
+def categorize_layers(history_data: list[dict]) -> Counter[str]:
+    """Categorize layer sizes by command pattern using Counter and pattern matching."""
+    totals: Counter[str] = Counter()
     for item in history_data:
         size = item.get("size", 0)
         cmd = item.get("CreatedBy", "") or ""
@@ -123,12 +135,8 @@ def categorize_layers(history_data: list[dict]) -> dict[str, int]:
 
 
 def fmt_size(b: int) -> str:
-    if b >= 1024 * 1024:
-        return f"{b / (1024 * 1024):8.2f} MB"
-    elif b >= 1024:
-        return f"{b / 1024:8.2f} KB"
-    else:
-        return f"{b:8d} B "
+    """Format byte size using rich's built-in decimal formatter."""
+    return f"{fmt_decimal(b):>10}"
 
 
 def fmt_pct(b: int, tot: int) -> str:
@@ -258,5 +266,6 @@ def main(
 
 if __name__ == "__main__":
     app()
+
 
 
