@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: gateway-py
+    env: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    healthCheckPath: /healthz
+    envVars:
+      - key: HF_MODEL
+        value: Qwen/Qwen2.5-72B-Instruct
+      - key: HF_TOKEN
+        sync: false
+      - key: QDRANT_URL
+        sync: false
+      - key: QDRANT_API_KEY
+        sync: false

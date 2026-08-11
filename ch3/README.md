@@ -147,5 +147,27 @@ docker run -p 8000:8000 -e HF_TOKEN=$HF_TOKEN gateway-py:latest
 
 ---
 
+## 7. Deploying to Render
+
+### Option A: Automatic Blueprint Deployment (`render.yaml`)
+
+1. Push your code to GitHub / GitLab.
+2. In [Render Dashboard](https://dashboard.render.com), click **New +** -> **Blueprint**.
+3. Select your repository. Render will automatically detect [`render.yaml`](file:///home/orpheezt/epam_challenge/ch3/render.yaml).
+4. Set your Environment Variables in Render Dashboard:
+   - `HF_TOKEN`: Your Hugging Face API token.
+   - `QDRANT_URL`: Your Qdrant Cloud URL.
+   - `QDRANT_API_KEY`: Your Qdrant API Key.
+
+### Option B: Manual Web Service Deployment
+
+1. Click **New +** -> **Web Service**.
+2. Select **Docker** environment.
+3. Health Check Path: `/healthz`
+4. Set Port to `8000` (or leave default `$PORT`).
+5. Add Environment Variables (`HF_TOKEN`, `QDRANT_URL`, `QDRANT_API_KEY`, `HF_MODEL`).
+
+---
+
 ### License
 MIT License. Developed for EPAM "Python Run, Debug the Future — Challenge 3: IA con Criterio".
