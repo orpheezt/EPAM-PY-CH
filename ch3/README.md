@@ -163,9 +163,10 @@ docker run -p 8000:8000 -e HF_TOKEN=$HF_TOKEN gateway-py:latest
 
 1. Click **New +** -> **Web Service**.
 2. Select **Docker** environment.
-3. Health Check Path: `/healthz`
-4. Set Port to `8000` (or leave default `$PORT`).
-5. Add Environment Variables (`HF_TOKEN`, `QDRANT_URL`, `QDRANT_API_KEY`, `HF_MODEL`).
+3. Set **Root Directory** to `ch3` (or `./ch3`).
+4. Set **Dockerfile Path** to `Dockerfile` (or `ch3/Dockerfile`).
+5. Health Check Path: `/healthz`
+6. Add Environment Variables (`HF_TOKEN`, `QDRANT_URL`, `QDRANT_API_KEY`, `HF_MODEL`).
 
 ---
 

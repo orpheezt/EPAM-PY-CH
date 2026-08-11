@@ -2,7 +2,8 @@ services:
   - type: web
     name: gateway-py
     env: docker
-    dockerfilePath: ./Dockerfile
+    rootDir: ch3
+    dockerfilePath: Dockerfile
     plan: free
     healthCheckPath: /healthz
     envVars:
